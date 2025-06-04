@@ -3,138 +3,35 @@
 let cart = [];
 let currentProduct = null;
 
-// Product data
-const soaps = {
-    'coconut-vanilla': {
-        name: 'Coconut and Vanilla Soap',
-        price: 8.99,
-        description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturized.',
-        image: 'Coconut and Vanilla Soap - Creamy white bar with natural ingredients'
-    },
-    'almond-milk': {
-        name: 'Almond Milk Soap',
-        price: 8.99,
-        description: 'Almond milk is a very good daily beauty bar that cleanses gently while nourishing your skin. Rich in vitamins and minerals, this soap is perfect for sensitive skin types.',
-        image: 'Almond Milk Soap - Gentle beige colored bar with almond essence'
-    },
-    'lavender': {
-        name: 'Lavender Soap',
-        price: 8.99,
-        description: 'Relaxing lavender scent for a calming experience. This soap combines the soothing properties of lavender essential oil with our natural soap base for a truly therapeutic bathing experience.',
-        image: 'Lavender Soap - Purple-tinted bar with dried lavender petals'
-    },
-    'eucalyptus': {
-        name: 'Eucalyptus Soap',
-        price: 8.99,
-        description: 'Refreshing eucalyptus for an invigorating clean. This energizing soap is perfect for morning use and helps clear your mind while cleansing your skin.',
-        image: 'Eucalyptus Soap - Green-tinted bar with eucalyptus leaves'
-    },
-    'tea-tree': {
-        name: 'Tea Tree Soap',
-        price: 9.99,
-        description: 'Antibacterial tea tree oil for problem skin. This therapeutic soap helps combat acne and other skin conditions while providing a deep, purifying cleanse.',
-        image: 'Tea Tree Soap - Natural colored bar with tea tree oil'
-    },
-    'oatmeal': {
-        name: 'Oatmeal Soap',
-        price: 8.99,
-        description: 'Gentle exfoliating oatmeal for sensitive skin. This soap provides mild exfoliation while being gentle enough for daily use on even the most sensitive skin.',
-        image: 'Oatmeal Soap - Beige bar with visible oatmeal pieces'
-    }
-};
-
-// Page navigation
-function showPage(pageId) {
-    // Hide all pages
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(page => page.classList.remove('active'));
-    
-    // Show selected page
-    document.getElementById(pageId).classList.add('active');
-    
-    // Close cart if open
+// Cart management functions
+function closeCart() {
     const cartSidebar = document.getElementById('cart-sidebar');
     const cartOverlay = document.getElementById('cart-overlay');
-    cartSidebar.classList.remove('open');
-    cartOverlay.style.display = 'none';
-}
-
-// Page navigation for multi-file structure
-function navigateToPage(pageUrl) {
-    // Close cart if open before navigation
-    closeCart();
     
-    // Navigate to the new page
-    window.location.href = pageUrl;
-}
-
-/* ANIMATIONS */
-// Scroll Animation for Elements
-function animateOnScroll() {
-    const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < window.innerHeight - elementVisible) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-}
-
-// Initialise scroll animations
-document.addEventListener('DOMContentLoaded', function() {
-    const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-    
-    // Run animation on scroll
-    window.addEventListener('scroll', animateOnScroll);
-    // Run animation on load
-    animateOnScroll();
-});
-
-// Parallax Effect for Hero Section
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const rate = scrolled * -0.5;
-    
-    if (hero) {
-        hero.style.transform = `translateY(${rate}px)`;
+    if (cartSidebar) {
+        cartSidebar.classList.remove('open');
     }
-});
-
-// Add loading animation
-window.addEventListener('load', function() {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-
-// Product detail functionality
-function showProduct(productId) {
-    currentProduct = productId;
-    const product = soaps[productId];
-    
-    if (product) {
-        document.getElementById('product-detail-name').textContent = product.name;
-        document.getElementById('product-detail-price').textContent = `${product.price.toFixed(2)}`;
-        document.getElementById('product-detail-description').textContent = product.description;
-        document.getElementById('product-detail-image').textContent = product.image;
-        document.getElementById('product-breadcrumb').textContent = product.name;
-        document.getElementById('quantity').value = 1;
-        
-        showPage('product-detail');
+    if (cartOverlay) {
+        cartOverlay.style.display = 'none';
     }
+    
+    // Restore body scrolling
+    document.body.style.overflow = 'auto';
+}
+
+function openCart() {
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartOverlay = document.getElementById('cart-overlay');
+    
+    if (cartSidebar) {
+        cartSidebar.classList.add('open');
+    }
+    if (cartOverlay) {
+        cartOverlay.style.display = 'block';
+    }
+    
+    // Prevent body scrolling when cart is open
+    document.body.style.overflow = 'hidden';
 }
 
 // Quantity controls
@@ -311,13 +208,7 @@ function showCartMessage() {
     }, 200);
 }
 
-// Mobile menu toggle (placeholder for future enhancement)
-document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-    // Toggle mobile menu - placeholder for future enhancement
-    alert('Mobile menu functionality would be implemented here');
-});
-
-// Initialize cart UI on page load
+// Initialise cart UI on page load
 document.addEventListener('DOMContentLoaded', function() {
     updateCartUI();
 });
