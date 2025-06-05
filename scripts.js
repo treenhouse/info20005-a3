@@ -1,15 +1,13 @@
-
 // Cart functionality
-let cart = [];
-let currentProduct = null;
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // Product data
-const soaps = {
+const products = {
     'coconut-vanilla': {
         name: 'Coconut and Vanilla Soap',
         price: 8.99,
         description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturized.',
-        image: 'Coconut and Vanilla Soap - Creamy white bar with natural ingredients'
+        image: '/resources/COCONUT_and_VANILLA_SOAP_100g.png'
     },
     'almond-milk': {
         name: 'Almond Milk Soap',
@@ -43,97 +41,71 @@ const soaps = {
     }
 };
 
-// Page navigation
-function showPage(pageId) {
-    // Hide all pages
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(page => page.classList.remove('active'));
-    
-    // Show selected page
-    document.getElementById(pageId).classList.add('active');
-    
-    // Close cart if open
-    const cartSidebar = document.getElementById('cart-sidebar');
-    const cartOverlay = document.getElementById('cart-overlay');
-    cartSidebar.classList.remove('open');
-    cartOverlay.style.display = 'none';
-}
-
-// Page navigation for multi-file structure
-function navigateToPage(pageUrl) {
-    // Close cart if open before navigation
-    closeCart();
-    
-    // Navigate to the new page
-    window.location.href = pageUrl;
-}
-
-/* ANIMATIONS */
-// Scroll Animation for Elements
-function animateOnScroll() {
-    const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < window.innerHeight - elementVisible) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-}
-
-// Initialise scroll animations
+// Initialise the page
 document.addEventListener('DOMContentLoaded', function() {
-    const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
-    elements.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    updateCartUI();
+    
+    // Set up event listeners
+    document.getElementById('cart-icon')?.addEventListener('click', toggleCart);
+    document.getElementById('close-cart')?.addEventListener('click', toggleCart);
+    document.getElementById('checkout-btn')?.addEventListener('click', proceedToCheckout);
+    
+    // Add to cart buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-id');
+            const productName = this.getAttribute('data-name');
+            const productPrice = parseFloat(this.getAttribute('data-price'));
+            addToCart(productId, productName, productPrice);
+        });
     });
     
-    // Run animation on scroll
-    window.addEventListener('scroll', animateOnScroll);
-    // Run animation on load
-    animateOnScroll();
-});
-
-// Parallax Effect for Hero Section
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const rate = scrolled * -0.5;
-    
-    if (hero) {
-        hero.style.transform = `translateY(${rate}px)`;
+    // Product detail page specific functionality
+    if (document.getElementById('add-to-cart-detail')) {
+        setupProductDetailPage();
     }
-});
-
-// Add loading animation
-window.addEventListener('load', function() {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-
-// Product detail functionality
-function showProduct(productId) {
-    currentProduct = productId;
-    const product = soaps[productId];
     
-    if (product) {
+    // Checkout form submission
+    document.getElementById('checkout-form')?.addEventListener('submit', processOrder);
+    
+    // Quantity controls
+    document.getElementById('increase-quantity')?.addEventListener('click', function() {
+        changeQuantity(1);
+    });
+    
+    document.getElementById('decrease-quantity')?.addEventListener('click', function() {
+        changeQuantity(-1);
+    });
+    
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        alert('Mobile menu functionality would be implemented here');
+    });
+});
+
+// Product detail page setup
+function setupProductDetailPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('product');
+    
+    if (productId && products[productId]) {
+        const product = products[productId];
         document.getElementById('product-detail-name').textContent = product.name;
-        document.getElementById('product-detail-price').textContent = `${product.price.toFixed(2)}`;
+        document.getElementById('product-detail-price').textContent = `$${product.price.toFixed(2)}`;
         document.getElementById('product-detail-description').textContent = product.description;
-        document.getElementById('product-detail-image').textContent = product.image;
         document.getElementById('product-breadcrumb').textContent = product.name;
-        document.getElementById('quantity').value = 1;
         
-        showPage('product-detail');
+        // Set the product image
+        document.getElementById('product-detail-img').src = `resources/${productId}.png`;
+        document.getElementById('product-detail-img').alt = product.name;
+        
+        document.getElementById('add-to-cart-detail').addEventListener('click', function() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            addToCart(productId, product.name, product.price, quantity);
+        });
+    } else {
+        // Product not found, redirect to products page
+        window.location.href = 'products.html';
     }
 }
 
@@ -148,49 +120,33 @@ function changeQuantity(change) {
 }
 
 // Add to cart functionality
-function addToCart(productId, productName, price) {
+function addToCart(productId, productName, price, quantity = 1) {
     const existingItem = cart.find(item => item.id === productId);
     
     if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += quantity;
     } else {
         cart.push({
             id: productId,
             name: productName,
             price: price,
-            quantity: 1
+            quantity: quantity
         });
     }
     
+    saveCart();
     updateCartUI();
     showCartMessage();
-}
-
-function addToCartFromDetail() {
-    if (currentProduct) {
-        const product = soaps[currentProduct];
-        const quantity = parseInt(document.getElementById('quantity').value);
-        
-        const existingItem = cart.find(item => item.id === currentProduct);
-        
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({
-                id: currentProduct,
-                name: product.name,
-                price: product.price,
-                quantity: quantity
-            });
-        }
-        
-        updateCartUI();
-        showCartMessage();
+    
+    // Open cart when adding an item
+    if (!document.getElementById('cart-sidebar').classList.contains('open')) {
+        toggleCart();
     }
 }
 
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
+    saveCart();
     updateCartUI();
 }
 
@@ -201,9 +157,15 @@ function updateCartQuantity(productId, newQuantity) {
             removeFromCart(productId);
         } else {
             item.quantity = newQuantity;
+            saveCart();
             updateCartUI();
         }
     }
+}
+
+// Save cart to localStorage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 // Cart UI update
@@ -211,40 +173,55 @@ function updateCartUI() {
     const cartCount = document.getElementById('cart-count');
     const cartItems = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
+    const checkoutItems = document.getElementById('checkout-items');
+    const checkoutTotal = document.getElementById('checkout-total');
     
     // Update cart count
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalItems;
+    if (cartCount) cartCount.textContent = totalItems;
     
     // Update cart items
-    if (cart.length === 0) {
-        cartItems.innerHTML = `
-            <div class="empty-cart">
-                <div class="empty-cart-icon">🛒</div>
-                <p>Your cart is empty</p>
-            </div>
-        `;
-    } else {
-        cartItems.innerHTML = cart.map(item => `
-            <div class="cart-item">
-                <div class="cart-item-image"></div>
-                <div class="cart-item-info">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">${item.price.toFixed(2)}</div>
-                    <div class="cart-item-controls">
-                        <button onclick="updateCartQuantity('${item.id}', ${item.quantity - 1})">-</button>
-                        <span>${item.quantity}</span>
-                        <button onclick="updateCartQuantity('${item.id}', ${item.quantity + 1})">+</button>
-                        <button onclick="removeFromCart('${item.id}')" style="margin-left: 10px; color: red;">Remove</button>
+    if (cartItems) {
+        if (cart.length === 0) {
+            cartItems.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <p>Your cart is empty</p>
+                </div>
+            `;
+        } else {
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-image"></div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                        <div class="cart-item-controls">
+                            <button onclick="updateCartQuantity('${item.id}', ${item.quantity - 1})">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateCartQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                            <button onclick="removeFromCart('${item.id}')" style="margin-left: 10px; color: red;">Remove</button>
+                        </div>
                     </div>
                 </div>
+            `).join('');
+        }
+    }
+    
+    // Update totals
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    if (cartTotal) cartTotal.textContent = total.toFixed(2);
+    if (checkoutTotal) checkoutTotal.textContent = total.toFixed(2);
+    
+    // Update checkout items
+    if (checkoutItems) {
+        checkoutItems.innerHTML = cart.map(item => `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <span>${item.name} × ${item.quantity}</span>
+                <span>$${(item.price * item.quantity).toFixed(2)}</span>
             </div>
         `).join('');
     }
-    
-    // Update total
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    cartTotal.textContent = total.toFixed(2);
 }
 
 // Cart toggle
@@ -267,143 +244,172 @@ function proceedToCheckout() {
         alert('Your cart is empty!');
         return;
     }
-    
-    // Update checkout summary
-    const checkoutItems = document.getElementById('checkout-items');
-    const checkoutTotal = document.getElementById('checkout-total');
-    
-    checkoutItems.innerHTML = cart.map(item => `
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-            <span>${item.name} × ${item.quantity}</span>
-            <span>${(item.price * item.quantity).toFixed(2)}</span>
-        </div>
-    `).join('');
-    
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    checkoutTotal.textContent = total.toFixed(2);
-    
-    showPage('checkout');
+    window.location.href = 'checkout.html';
 }
 
 // Order processing
 function processOrder(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     
     // Simulate order processing
+    const checkoutBtn = document.querySelector('.checkout-btn');
+    if (checkoutBtn) {
+        checkoutBtn.disabled = true;
+        checkoutBtn.classList.add('loading');
+    }
+    
     setTimeout(() => {
         // Clear cart
         cart = [];
+        saveCart();
         updateCartUI();
         
         // Show thank you page
-        showPage('thank-you');
+        window.location.href = 'thank-you.html';
     }, 1000);
 }
 
 // Show cart message
 function showCartMessage() {
-    // Simple notification (you could enhance this with a toast notification)
-    const originalText = document.querySelector('.cart-count').textContent;
     const cartCount = document.querySelector('.cart-count');
-    cartCount.style.transform = 'scale(1.2)';
-    setTimeout(() => {
-        cartCount.style.transform = 'scale(1)';
-    }, 200);
+    if (cartCount) {
+        cartCount.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            cartCount.style.transform = 'scale(1)';
+        }, 200);
+    }
 }
 
-// Mobile menu toggle (placeholder for future enhancement)
-document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
-    // Toggle mobile menu - placeholder for future enhancement
-    alert('Mobile menu functionality would be implemented here');
+/* ANIMATIONS */
+// Smooth Scrolling for Navigation Links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    });
 });
 
-// Initialize cart UI on page load
+// Navbar Background Change on Scroll
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 100) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+    } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+    }
+});
+
+// Scroll Animation for Elements
+function animateOnScroll() {
+    const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
+    
+    elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+// Initialize scroll animations
 document.addEventListener('DOMContentLoaded', function() {
-    updateCartUI();
+    const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
+    elements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    });
+    
+    // Run animation on scroll
+    window.addEventListener('scroll', animateOnScroll);
+    // Run animation on load
+    animateOnScroll();
 });
 
-// Add some CSS for cart item controls
-const additionalStyles = `
-    <style>
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .cart-item-controls button {
-            background: #5a7c65;
-            color: white;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .cart-item-controls button:hover {
-            background: #4a6b55;
-        }
-        
-        .cart-item-controls span {
-            min-width: 20px;
-            text-align: center;
-        }
-        
-        .total-line {
-            border-top: 2px solid #5a7c65;
-            padding-top: 1rem;
-            margin-top: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .checkout-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        /* Better mobile cart experience */
-        @media (max-width: 480px) {
-            .cart-item {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .cart-item-info {
-                width: 100%;
-            }
-            
-            .cart-item-controls {
-                justify-content: space-between;
-            }
-        }
-        
-        /* Form validation styles */
-        .form-group input:invalid,
-        .form-group select:invalid {
-            border-color: #e74c3c;
-        }
-        
-        .form-group input:valid,
-        .form-group select:valid {
-            border-color: #27ae60;
-        }
-        
-        /* Loading state for checkout */
-        .checkout-btn.loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-        
-        .checkout-btn.loading::after {
-            content: " Processing...";
-        }
-    </style>
-`;
+// CTA Button Click Handler
+document.querySelector('.cta-button').addEventListener('click', function() {
+    // Scroll to products section
+    const productsSection = document.getElementById('products');
+    const offsetTop = productsSection.offsetTop - 80;
+    window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+    });
+});
 
-document.head.insertAdjacentHTML('beforeend', additionalStyles);
+// Product Card Hover Effects
+document.addEventListener('DOMContentLoaded', function() {
+    const productCards = document.querySelectorAll('.product-card');
+    
+    productCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+});
 
-// Initialise when document is ready
-document.addEventListener('DOMContentLoaded', initializeApp);
+// Read More Button Functionality
+document.querySelector('.read-more-btn').addEventListener('click', function() {
+    const storyText = document.querySelector('.story-text');
+    const fullText = `
+        <p>At Australian Natural Soap, we believe that skincare should be simple, natural, and free from harmful chemicals. Our journey began with a passion for sustainable living and a love for Triple Milled Soap.</p>
+        
+        <p>Frustrated with mass-produced soaps filled with synthetic ingredients, we set out to create something better. Using traditional soap-making methods and the finest natural ingredients sourced from across Australia, we craft each bar with care and attention to detail.</p>
+        
+        <p>Our commitment to sustainability extends beyond our products. We use eco-friendly packaging, support local suppliers, and ensure our manufacturing processes have minimal environmental impact. Every purchase supports Australian communities and sustainable practices.</p>
+        
+        <p>Today, Australian Natural Soap continues to grow while maintaining our core values of quality, sustainability, and natural beauty. We're proud to bring you soaps that not only care for your skin but also care for our planet.</p>
+    `;
+    
+    if (this.textContent === 'Read More') {
+        storyText.innerHTML = fullText + '<button class="read-more-btn">Read Less</button>';
+        this.textContent = 'Read Less';
+    } else {
+        storyText.innerHTML = `
+            <p>At Australian Natural Soap, we believe that skincare should be simple, natural, and free from harmful chemicals. Our journey began with a passion for sustainable living and a love for Triple Milled Soap.</p>
+            
+            <p>Frustrated with mass-produced soaps filled with synthetic ingredients, we set out to create...</p>
+            
+            <button class="read-more-btn">Read More</button>
+        `;
+    }
+    
+    // Re-attach event listener to new button
+    document.querySelector('.read-more-btn').addEventListener('click', arguments.callee);
+});
+
+// Parallax Effect for Hero Section
+window.addEventListener('scroll', function() {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    const rate = scrolled * -0.5;
+    
+    if (hero) {
+        hero.style.transform = `translateY(${rate}px)`;
+    }
+});
+
+// Add loading animation
+window.addEventListener('load', function() {
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease';
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});

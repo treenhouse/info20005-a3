@@ -6,24 +6,21 @@
     <title>Australian Natural Soap</title>
     <link rel="stylesheet" href="styles.css">
     <script src="scripts.js"></script>
-    <script src="sidebar.js"></script>
+    <script src="cart.js"></script>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home')">
-                <svg class="leaf-icon" viewBox="0 0 24 24">
-                    <path d="M12 2L8 8H16L12 2ZM12 22L16 16H8L12 22ZM2 12L8 8V16L2 12ZM22 12L16 16V8L22 12Z"/>
-                </svg>
-                Australian Natural Soap
+            <a href="home.html" data-page="home">
+                <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
             </a>
             
             <ul class="nav-menu">
-                <li><a href="#" onclick="showPage('home')">Home</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Soap</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Incense</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Aromatherapy</a></li>
+                <li><a href="home.html" data-page="home">Home</a></li>
+                <li><a href="products.html" data-page="products">Soap</a></li>
+                <li><a href="#" data-page="products">Incense</a></li>
+                <li><a href="#" data-page="products">Aromatherapy</a></li>
             </ul>
 
             <button class="mobile-menu-toggle">☰</button>

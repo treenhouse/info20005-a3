@@ -6,27 +6,26 @@
     <title>Australian Natural Soap</title>
     <link rel="stylesheet" href="styles.css">
     <script src="scripts.js"></script>
-    <script src="sidebar.js"></script>
 </head>
 <body>
 
     <!-- Header -->
     <header class="header">
         <nav class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home')">
+            <a href="home.html">
                 <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
             </a>
             
             <ul class="nav-menu">
-                <li><a href="home.html" data-page="home">Home</a></li>
-                <li><a href="products.html" data-page="soaps">Soap</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Incense</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Aromatherapy</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Soap</a></li>
+                <li><a href="products.html">Incense</a></li>
+                <li><a href="products.html">Aromatherapy</a></li>
             </ul>
 
             <button class="mobile-menu-toggle">☰</button>
 
-            <div class="cart-icon" onclick="toggleCart()">
+            <div class="cart-icon" id="cart-icon">
                 🛒
                 <span class="cart-count" id="cart-count">0</span>
             </div>
@@ -39,79 +38,48 @@
             <div class="hero-content">
                 <h1>Australian Natural Soap</h1>
                 <p class="hero-subtitle">Made Local, All Natural</p>
-                <a href="#" class="cta-button" onclick="showPage('soaps')">Shop Now</a>
+                <a href="products.html" class="cta-button">Shop Now</a>
             </div>
         </section>
 
 
         <!-- Products Section -->
-        <section class="products" id="products">
+        <section class="home-products" id="home-products">
             <div class="container">
                 <h2 class="section-title">Products</h2>
                 
-                <div class="product-grid">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <div class="placeholder-image soap-image">
-                                <img src="resources/COCONUT_and_VANILLA_SOAP_100gr.BAR_-1-removebg-preview.png" alt="Soap Placeholder Image">
+                <div class="home-product-grid">
+                    <a href="products.html">
+                        <div class="home-product-card">
+                            <div class="home-product-image">
+                                <div>
+                                    <img src="resources/coconut-vanilla.png" alt="Soap Placeholder Image" class="placeholder-image soap-image">
+                                </div>
+                            </div>
+                            <h3 class="home-product-title">SOAP</h3>
+                        </div>
+                    </a>
+                    
+                    <div class="home-product-card">
+                        <div class="home-product-image">
+                            <div>
+                                <img src="resources/incense-black-opium-placeholder.png" alt="Incense Placeholder Image" class="placeholder-image incense-image">
                             </div>
                         </div>
-                        <h3 class="product-title">SOAP</h3>
-                    </div>
-                    
-                    <div class="product-card">
-                        <div class="product-image">
-                            <div class="placeholder-image incense-image"></div>
-                        </div>
-                        <h3 class="product-title">INCENSE</h3>
+                        <h3 class="home-product-title">INCENSE</h3>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-image">
-                            <div class="placeholder-image aromatherapy-image"></div>
+                    <div class="home-product-card">
+                        <div class="home-product-image">
+                            <div>
+                                <img src="resources/armomatherapy-placeholder.png" alt="Aromatherapy Placeholder Image" class="placeholder-image aromatherapy-image">
+                            </div>
                         </div>
-                        <h3 class="product-title">AROMATHERAPY</h3>
+                        <h3 class="home-product-title">AROMATHERAPY</h3>
                     </div>
                 </div>
             </div>
         </section>
-
-        <div class="container">
-            <section class="soaps-section">
-                <h2 class="section-title">Featured Products</h2>
-                <div class="product-grid">
-                    <div class="product-card" onclick="showProduct('coconut-vanilla')">
-                        <div class="product-image">Coconut and Vanilla Soap Image</div>
-                        <div class="product-info">
-                            <h3 class="product-name">Coconut and Vanilla Soap</h3>
-                            <p class="product-price">$8.99</p>
-                            <p class="product-description">The beautiful creamy Coconut fragrance is intoxicating.</p>
-                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('coconut-vanilla', 'Coconut and Vanilla Soap', 8.99)">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card" onclick="showProduct('almond-milk')">
-                        <div class="product-image">Almond Milk Soap Image</div>
-                        <div class="product-info">
-                            <h3 class="product-name">Almond Milk Soap</h3>
-                            <p class="product-price">$8.99</p>
-                            <p class="product-description">Almond milk is a very good daily beauty bar.</p>
-                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('almond-milk', 'Almond Milk Soap', 8.99)">Add to Cart</button>
-                        </div>
-                    </div>
-
-                    <div class="product-card" onclick="showProduct('eucalyptus')">
-                        <div class="product-image">Eucalyptus Soap Image</div>
-                        <div class="product-info">
-                            <h3 class="product-name">Eucalyptus Soap</h3>
-                            <p class="product-price">$8.99</p>
-                            <p class="product-description">Refreshing eucalyptus for an invigorating clean.</p>
-                            <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('eucalyptus', 'Eucalyptus Soap', 8.99)">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
 
         <!-- About Section -->
         <section class="about">
@@ -123,13 +91,13 @@
                 
                 <div class="features">
                     <div class="feature">
-                        <img src="resources/peta-cruelty-free.png" alt="PETA Cruelty Free" height="40">
+                        <img src="resources/peta-cruelty-free.png" alt="PETA Cruelty Free" class="feature-icon">
                     </div>
                     <div class="feature">
-                        <img src="resources/no-chemicals.png" alt="No Added Chemicals" height="40">
+                        <img src="resources/no-chemicals.png" alt="No Added Chemicals" class="feature-icon">
                     </div>
                     <div class="feature">
-                        <img src="resources/australian-made-and-owned.png" alt="Australian Made and Owned" height="40">
+                        <img src="resources/australian-made-and-owned.png" alt="Australian Made and Owned" class="feature-icon">
                     </div>
                 </div>
                 

@@ -5,101 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Australian Natural Soap</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="cart.js"></script>
     <script src="scripts.js"></script>
-    <script src="sidebar.js"></script>
 </head>
     <body>
         <!-- Header -->
-    <header class="header">
-        <nav class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home')">
-                <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
-            </a>
-            
-            <ul class="nav-menu">
-                <li><a href="home.html" data-page="home">Home</a></li>
-                <li><a href="products.html" data-page="soaps">Soap</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Incense</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Aromatherapy</a></li>
-            </ul>
+        <header class="header">
+            <nav class="nav-container">
+                <a href="home.html" data-page="home">
+                    <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
+                </a>
+                
+                <ul class="nav-menu">
+                    <li><a href="home.html" data-page="home">Home</a></li>
+                    <li><a href="products.html" data-page="products">Soap</a></li>
+                    <li><a href="#" onclick="showPage('soaps')">Incense</a></li>
+                    <li><a href="#" onclick="showPage('soaps')">Aromatherapy</a></li>
+                </ul>
 
-            <button class="mobile-menu-toggle">☰</button>
+                <button class="mobile-menu-toggle">☰</button>
 
-            <div class="cart-icon" onclick="toggleCart()">
-                🛒
-                <span class="cart-count" id="cart-count">0</span>
-            </div>
-        </nav>
-    </header>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+            </nav>
+        </header>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="home.html">Home</a> > Products
+        </div>
         
-    <!-- Products Page -->
-    <div id="products" class="page">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="#" onclick="showPage('home')">Home</a> > Products
+        <h1 class="section-title">All Products</h1>
+        
+        <div class="product-grid">
+            <div class="product-card" onclick="location.href='product-detail.html?product=coconut-vanilla'">
+                <div class="product-image-background"></div>
+                    <div class="product-image">
+                        <img src="resources/coconut-vanilla.png" alt="Coconut and Vanilla Soap">
+                    </div>
+
+                <div class="product-info">
+                    <h3 class="product-name">Coconut and Vanilla Soap</h3>
+                    <p class="product-price">$8.99</p>
+                    <p class="product-description">The beautiful creamy Coconut fragrance is intoxicating.</p>
+                    <button class="add-to-cart" data-id="coconut-vanilla" data-name="Coconut and Vanilla Soap" data-price="8.99">Add to Cart</button>
+                </div>
             </div>
-            
-            <h1 class="section-title">All Products</h1>
-            
-            <div class="product-grid">
-                <div class="product-card" onclick="showProduct('coconut-vanilla')">
-                    <div class="product-image">Coconut and Vanilla Soap Image</div>
-                    <div class="product-info">
-                        <h3 class="product-name">Coconut and Vanilla Soap</h3>
-                        <p class="product-price">$8.99</p>
-                        <p class="product-description">The beautiful creamy Coconut fragrance is intoxicating.</p>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('coconut-vanilla', 'Coconut and Vanilla Soap', 8.99)">Add to Cart</button>
-                    </div>
-                </div>
 
-                <div class="product-card" onclick="showProduct('almond-milk')">
-                    <div class="product-image">Almond Milk Soap Image</div>
-                    <div class="product-info">
-                        <h3 class="product-name">Almond Milk Soap</h3>
-                        <p class="product-price">$8.99</p>
-                        <p class="product-description">Almond milk is a very good daily beauty bar.</p>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('almond-milk', 'Almond Milk Soap', 8.99)">Add to Cart</button>
-                    </div>
+            <div class="product-card" onclick="location.href='product-detail.html?product=almond-milk'">
+                <div class="product-image">Almond Milk Soap Image</div>
+                <div class="product-info">
+                    <h3 class="product-name">Almond Milk Soap</h3>
+                    <p class="product-price">$8.99</p>
+                    <p class="product-description">Almond milk is a very good daily beauty bar.</p>
+                    <button class="add-to-cart" data-id="almond-milk" data-name="Almond Milk Soap" data-price="8.99">Add to Cart</button>
                 </div>
+            </div>
 
-                <div class="product-card" onclick="showProduct('lavender')">
-                    <div class="product-image">Lavender Soap Image</div>
-                    <div class="product-info">
-                        <h3 class="product-name">Lavender Soap</h3>
-                        <p class="product-price">$8.99</p>
-                        <p class="product-description">Relaxing lavender scent for a calming experience.</p>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('lavender', 'Lavender Soap', 8.99)">Add to Cart</button>
-                    </div>
+            <div class="product-card" onclick="location.href='product-detail.html?product=lavender'">
+                <div class="product-image">Lavender Soap Image</div>
+                <div class="product-info">
+                    <h3 class="product-name">Lavender Soap</h3>
+                    <p class="product-price">$8.99</p>
+                    <p class="product-description">Relaxing lavender scent for a calming experience.</p>
+                    <button class="add-to-cart" data-id="lavender" data-name="Lavender Soap" data-price="8.99">Add to Cart</button>
                 </div>
+            </div>
 
-                <div class="product-card" onclick="showProduct('eucalyptus')">
-                    <div class="product-image">Eucalyptus Soap Image</div>
-                    <div class="product-info">
-                        <h3 class="product-name">Eucalyptus Soap</h3>
-                        <p class="product-price">$8.99</p>
-                        <p class="product-description">Refreshing eucalyptus for an invigorating clean.</p>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('eucalyptus', 'Eucalyptus Soap', 8.99)">Add to Cart</button>
-                    </div>
+            <div class="product-card" onclick="location.href='product-detail.html?product=eucalyptus'">
+                <div class="product-image">Eucalyptus Soap Image</div>
+                <div class="product-info">
+                    <h3 class="product-name">Eucalyptus Soap</h3>
+                    <p class="product-price">$8.99</p>
+                    <p class="product-description">Refreshing eucalyptus for an invigorating clean.</p>
+                    <button class="add-to-cart" data-id="eucalyptus" data-name="Eucalyptus Soap" data-price="8.99">Add to Cart</button>
                 </div>
+            </div>
 
-                <div class="product-card" onclick="showProduct('tea-tree')">
-                    <div class="product-image">Tea Tree Soap Image</div>
-                    <div class="product-info">
-                        <h3 class="product-name">Tea Tree Soap</h3>
-                        <p class="product-price">$9.99</p>
-                        <p class="product-description">Antibacterial tea tree oil for problem skin.</p>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('tea-tree', 'Tea Tree Soap', 9.99)">Add to Cart</button>
-                    </div>
+            <div class="product-card" onclick="location.href='product-detail.html?product=tea-tree'">
+                <div class="product-image">Tea Tree Soap Image</div>
+                <div class="product-info">
+                    <h3 class="product-name">Tea Tree Soap</h3>
+                    <p class="product-price">$9.99</p>
+                    <p class="product-description">Antibacterial tea tree oil for problem skin.</p>
+                    <button class="add-to-cart" data-id="tea-tree" data-name="Tea Tree Soap" data-price="9.99">Add to Cart</button>
                 </div>
+            </div>
 
-                <div class="product-card" onclick="showProduct('oatmeal')">
-                    <div class="product-image">Oatmeal Soap Image</div>
-                    <div class="product-info">
-                        <h3 class="product-name">Oatmeal Soap</h3>
-                        <p class="product-price">$8.99</p>
-                        <p class="product-description">Gentle exfoliating oatmeal for sensitive skin.</p>
-                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart('oatmeal', 'Oatmeal Soap', 8.99)">Add to Cart</button>
-                    </div>
+            <div class="product-card" onclick="location.href='product-detail.html?product=oatmeal'">
+                <div class="product-image">Oatmeal Soap Image</div>
+                <div class="product-info">
+                    <h3 class="product-name">Oatmeal Soap</h3>
+                    <p class="product-price">$8.99</p>
+                    <p class="product-description">Gentle exfoliating oatmeal for sensitive skin.</p>
+                    <button class="add-to-cart" data-id="oatmeal" data-name="Oatmeal Soap" data-price="8.99">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -136,6 +137,6 @@
             </div>
         </div>
     </footer>
-    
     </body>
 </html>
+

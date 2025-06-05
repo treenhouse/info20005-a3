@@ -223,15 +223,26 @@ body {
 
 /* Hero Section */
 .hero {
-    background-image: url('resources/hero-hackground.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white;
+    height: 80vh;
+    background-image: url('resources/hero-background.png');
+    background-size: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 4rem 1rem;
     position: relative;
     overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    opacity: 0.3;
 }
 
 .hero-content {
@@ -239,9 +250,17 @@ body {
     z-index: 2;
     max-width: 600px;
     margin: 0 auto;
+    color: white;
 }
 
 .hero h1 {
+    color: #FFF;
+    text-align: center;
+    font-family: "Noto Serif Display";
+    font-style: normal;
+    font-weight: 900;
+    line-height: 2.8125rem; /* 100% */
+    text-transform: capitalize;
     font-size: 3rem;
     margin-bottom: 1rem;
     font-weight: normal;
@@ -255,20 +274,23 @@ body {
 }
 
 .cta-button {
-    background: #d4947a;
+    border: 3px solid #F0EEEB; 
     color: white;
     padding: 1rem 2rem;
-    border: none;
-    border-radius: 5px;
+    font-family: "Noto Serif Display";
     font-size: 1.1rem;
-    cursor: pointer;
     transition: background-color 0.3s;
     text-decoration: none;
     display: inline-block;
 }
 
 .cta-button:hover {
-    background: #c17f6a;
+    background-color: #F0EEEB;
+    color: #5a7c65;
+}
+
+.cta-button:hover .cta-button-text {
+    color: #5a7c65;
 }
 
 /* Main Content */
@@ -288,6 +310,15 @@ body {
 .feature {
     text-align: center;
 }
+
+.feature-icon {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
 
 /* Story Section */
 
@@ -336,6 +367,62 @@ body {
     transform: translateY(-2px);
 }
 
+/* HOMEPAGE Products Section */
+.home-products {
+    padding: 6rem 0;
+    background: white;
+}
+
+.home-product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.home-product-card {
+    text-align: center;
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.home-product-image {
+    margin-bottom: 1.5rem;
+}
+
+.placeholder-image {
+    height: 200px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.soap-image {
+    background: linear-gradient(135deg, #DDA0DD, #9370DB);
+    background-image: 
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+}
+
+.incense-image {
+    background: linear-gradient(135deg, #8B4513, #A0522D);
+    background-image: 
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+}
+
+.home-product-title {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
 /* Product Grid */
 .products-section {
     margin: 3rem 0;
@@ -371,13 +458,25 @@ body {
 }
 
 .product-image {
-    height: 200px;
-    background: #e8ddd4;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #999;
     font-size: 0.9rem;
+}
+
+.product-image-background {
+    background: rgba(235, 231, 223, 0.85);
+    filter: blur(25px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.product-image img {
+    height: 100%;
+    object-fit: cover;
 }
 
 .product-info {
@@ -425,13 +524,17 @@ body {
 }
 
 .product-detail-image {
-    height: 400px;
-    background: #e8ddd4;
+    height: 370px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #999;
+}
+
+.product-detail-image img {
+    height: 100%;
+    object-fit: cover;
 }
 
 .product-detail-info h1 {
@@ -554,6 +657,11 @@ body {
         display: block;
     }
 
+    .hero {
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
     .hero h1 {
         font-size: 2rem;
     }
@@ -637,6 +745,7 @@ body {
     }
 
     .section-title {
+        padding: 10%;
         font-size: 2rem;
     }
 

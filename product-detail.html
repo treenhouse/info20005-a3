@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Australian Natural Soap</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="home.html">
+                <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Soap</a></li>
+                <li><a href="products.html">Incense</a></li>
+                <li><a href="products.html">Aromatherapy</a></li>
+            </ul>
+
+            <button class="mobile-menu-toggle">☰</button>
+
+            <div class="cart-icon" id="cart-icon">
+                🛒
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> > 
+            <a href="products.html">Products</a> > 
+            <span id="product-breadcrumb">Product</span>
+        </div>
+        
+        <div class="product-detail">
+            <div class="product-detail-image">
+                <div class="product-image-background"></div>
+                <img id="product-detail-img" src="" alt="">
+            </div>
+            
+            <div class="product-detail-info">
+                <h1 id="product-detail-name">Product Name</h1>
+                <p class="product-detail-price" id="product-detail-price">$0.00</p>
+                
+                <div class="product-description">
+                    <h3>Description</h3>
+                    <p id="product-detail-description">Product description will appear here.</p>
+                </div>
+                
+                <div class="quantity-selector">
+                    <label for="quantity">Quantity:</label>
+                    <button class="quantity-btn" id="decrease-quantity">-</button>
+                    <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+                    <button class="quantity-btn" id="increase-quantity">+</button>
+                </div>
+                
+                <button class="cta-button" id="add-to-cart-detail">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="close-cart">×</button>
+        </div>
+        
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">
+                <div class="empty-cart-icon">🛒</div>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        
+        <div class="cart-footer">
+            <div class="cart-total">
+                Total: $<span id="cart-total">0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">
+                <img src="resources/AustralianNaturalSoap-logo.png" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
