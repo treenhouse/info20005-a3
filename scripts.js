@@ -3,47 +3,54 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // Product data
 const products = {
-    'coconut-vanilla': {
+    'coconut-vanilla-100g': {
         name: 'Coconut and Vanilla Soap',
-        price: 8.99,
+        mass: '100g',
+        price: 1.80,
         description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturized.',
-        image: '/resources/COCONUT_and_VANILLA_SOAP_100g.png'
+        image: 'resources/coconut-vanilla.png'
     },
-    'almond-milk': {
+    'coconut-vanilla-200g': {
+        name: 'Coconut and Vanilla Soap',
+        mass: '200g',
+        price: 2.75,
+        description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturized.',
+        image: 'resources/coconut-vanilla.png'
+    },
+    'almond-milk-100g': {
         name: 'Almond Milk Soap',
-        price: 8.99,
+        mass: '100g',
+        price: 1.80,
         description: 'Almond milk is a very good daily beauty bar that cleanses gently while nourishing your skin. Rich in vitamins and minerals, this soap is perfect for sensitive skin types.',
-        image: 'Almond Milk Soap - Gentle beige colored bar with almond essence'
+        image: 'resources/almond-milk.png'
     },
-    'lavender': {
-        name: 'Lavender Soap',
-        price: 8.99,
-        description: 'Relaxing lavender scent for a calming experience. This soap combines the soothing properties of lavender essential oil with our natural soap base for a truly therapeutic bathing experience.',
-        image: 'Lavender Soap - Purple-tinted bar with dried lavender petals'
+    'almond-milk-200g': {
+        name: 'Almond Milk Soap',
+        mass: '200g',
+        price: 2.75,
+        description: 'Almond milk is a very good daily beauty bar that cleanses gently while nourishing your skin. Rich in vitamins and minerals, this soap is perfect for sensitive skin types.',
+        image: 'resources/almond-milk.png'
     },
-    'eucalyptus': {
-        name: 'Eucalyptus Soap',
-        price: 8.99,
-        description: 'Refreshing eucalyptus for an invigorating clean. This energizing soap is perfect for morning use and helps clear your mind while cleansing your skin.',
-        image: 'Eucalyptus Soap - Green-tinted bar with eucalyptus leaves'
+    'frangipani-100g': {
+        name: 'Frangipani Soap',
+        mass: '100g',
+        price: 1.80,
+        description: 'Relaxing frangipani scent for a calming experience. This soap combines the soothing properties of frangipani essential oil with our natural soap base for a truly therapeutic bathing experience.',
+        image: 'resources/frangipani.png'
     },
-    'tea-tree': {
-        name: 'Tea Tree Soap',
-        price: 9.99,
-        description: 'Antibacterial tea tree oil for problem skin. This therapeutic soap helps combat acne and other skin conditions while providing a deep, purifying cleanse.',
-        image: 'Tea Tree Soap - Natural colored bar with tea tree oil'
-    },
-    'oatmeal': {
-        name: 'Oatmeal Soap',
-        price: 8.99,
-        description: 'Gentle exfoliating oatmeal for sensitive skin. This soap provides mild exfoliation while being gentle enough for daily use on even the most sensitive skin.',
-        image: 'Oatmeal Soap - Beige bar with visible oatmeal pieces'
+    'frangipani-200g': {
+        name: 'Frangipani Soap',
+        mass: '200g',
+        price: 2.75,
+        description: 'Relaxing frangipani scent for a calming experience. This soap combines the soothing properties of frangipani essential oil with our natural soap base for a truly therapeutic bathing experience.',
+        image: 'resources/frangipani.png'
     }
 };
 
 // Initialise the page
 document.addEventListener('DOMContentLoaded', function() {
     updateCartUI();
+    setupProductGrid();
     
     // Set up event listeners
     document.getElementById('cart-icon')?.addEventListener('click', toggleCart);
@@ -52,7 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add to cart buttons
     document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent triggering the card's click event
             const productId = this.getAttribute('data-id');
             const productName = this.getAttribute('data-name');
             const productPrice = parseFloat(this.getAttribute('data-price'));
@@ -83,6 +91,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function setupProductGrid() {
+    const productGrid = document.querySelector('.product-grid');
+    if (!productGrid) return;
+
+    productGrid.innerHTML = ''; // Clear existing content
+
+    Object.entries(products).forEach(([id, product]) => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        productCard.dataset.productId = id; // Store product ID on the card
+        
+        productCard.innerHTML = `
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}">
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">${product.name}</h3>
+                ${product.weight ? `<p class="product-weight">${product.weight}</p>` : ''}
+                <p class="product-price">$${product.price.toFixed(2)}</p>
+                <p class="product-description">${product.description}</p>
+                <button class="add-to-cart" 
+                    data-id="${id}" 
+                    data-name="${product.name}${product.weight ? ' ' + product.weight : ''}" 
+                    data-price="${product.price}">
+                    Add to Cart
+                </button>
+            </div>
+        `;
+
+        productGrid.appendChild(productCard);
+    });
+
+    // Single event listener for the entire grid
+    productGrid.addEventListener('click', function(e) {
+        // Handle card clicks (navigation to product detail)
+        if (e.target.closest('.product-card')) {
+            const card = e.target.closest('.product-card');
+            const productId = card.dataset.productId;
+            window.location.href = `product-detail.html?product=${productId}`;
+        }
+        
+        // Handle add to cart button clicks
+        if (e.target.classList.contains('add-to-cart')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const button = e.target;
+            const productId = button.getAttribute('data-id');
+            const productName = button.getAttribute('data-name');
+            const productPrice = parseFloat(button.getAttribute('data-price'));
+            addToCart(productId, productName, productPrice);
+        }
+    });
+}
+
 // Product detail page setup
 function setupProductDetailPage() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -96,7 +158,7 @@ function setupProductDetailPage() {
         document.getElementById('product-breadcrumb').textContent = product.name;
         
         // Set the product image
-        document.getElementById('product-detail-img').src = `resources/${productId}.png`;
+        document.getElementById('product-detail-img').src = product.image;
         document.getElementById('product-detail-img').alt = product.name;
         
         document.getElementById('add-to-cart-detail').addEventListener('click', function() {
@@ -368,13 +430,14 @@ document.addEventListener('DOMContentLoaded', function() {
 document.querySelector('.read-more-btn').addEventListener('click', function() {
     const storyText = document.querySelector('.story-text');
     const fullText = `
-        <p>At Australian Natural Soap, we believe that skincare should be simple, natural, and free from harmful chemicals. Our journey began with a passion for sustainable living and a love for Triple Milled Soap.</p>
+        <p>After many years of attending many markets with our beautiful soaps and other products, we have our website operating. </p>
+
+        <p>During the many COVID-19 lockdowns, we were able continue serving our valued customers thru our website. We subsidised the postal cost making it easy for our customers to still be able to obtain our soaps. We also operate our shop at Dandenong Market, Stalls B1-2 in the Bazaar area. </p>
         
-        <p>Frustrated with mass-produced soaps filled with synthetic ingredients, we set out to create something better. Using traditional soap-making methods and the finest natural ingredients sourced from across Australia, we craft each bar with care and attention to detail.</p>
+        <p>We were able to expand our products to a large range of incense Sticks. Incense cones and resins. Added essential and fragrance oils. We also have a beautiful selection of crystals and stones. Handmade jewelry with our beautiful crystal set in sterling Silver. </p>
+
+        <p>Our shop has a lovely relaxing atmosphere with the soft music in the background.  Come and visit us.</p>
         
-        <p>Our commitment to sustainability extends beyond our products. We use eco-friendly packaging, support local suppliers, and ensure our manufacturing processes have minimal environmental impact. Every purchase supports Australian communities and sustainable practices.</p>
-        
-        <p>Today, Australian Natural Soap continues to grow while maintaining our core values of quality, sustainability, and natural beauty. We're proud to bring you soaps that not only care for your skin but also care for our planet.</p>
     `;
     
     if (this.textContent === 'Read More') {
@@ -382,9 +445,7 @@ document.querySelector('.read-more-btn').addEventListener('click', function() {
         this.textContent = 'Read Less';
     } else {
         storyText.innerHTML = `
-            <p>At Australian Natural Soap, we believe that skincare should be simple, natural, and free from harmful chemicals. Our journey began with a passion for sustainable living and a love for Triple Milled Soap.</p>
-            
-            <p>Frustrated with mass-produced soaps filled with synthetic ingredients, we set out to create...</p>
+            <p>After many years of attending many markets with our beautiful soaps and other products, we have our website operating. During the many COVID-19 lockdowns, we were able continue serving our valued customers thru our website. We subsidised the postal cost making it easy for our customers to still be able to obtain our soaps. We also operate our shop at Dandenong Market, Stalls B1-2 in the Bazaar area. We were able to expand... </p>
             
             <button class="read-more-btn">Read More</button>
         `;

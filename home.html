@@ -42,6 +42,31 @@
             </div>
         </section>
 
+        <!-- About Section -->
+        <section class="about">
+            <div class="container">
+                <h2 class="section-title">Made Local, All Natural</h2>
+                <p class="about-text">
+                    Australian Natural Soap is crafted with premium, eco-friendly ingredients to nourish and revitalise your skin. At Australian Natural Soap, we specialise in Australian made soap, using plant-based oils and essential extracts for a gentle, moisturising cleanse. Experience the difference with our handcrafted soaps, designed for all skin types.
+                </p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <img src="resources/peta-cruelty-free.png" alt="PETA Cruelty Free" class="feature-icon">
+                    </div>
+                    <div class="feature">
+                        <img src="resources/no-chemicals.png" alt="No Added Chemicals" class="feature-icon">
+                    </div>
+                    <div class="feature">
+                        <img src="resources/australian-made-and-owned.png" alt="Australian Made and Owned" class="feature-icon">
+                    </div>
+                </div>
+                
+                <div class="quality-text">
+                    <p>Our commitment to quality ensures that every bar of Australian Natural Soap is cruelty-free, chemical-free, and made sustainably. Whether you prefer invigorating citrus, calming lavender, or refreshing eucalyptus, our range offers the best Natural Soap from Australia.</p>
+                </div>
+            </div>
+        </section>
 
         <!-- Products Section -->
         <section class="home-products" id="home-products">
@@ -81,32 +106,6 @@
             </div>
         </section>
 
-        <!-- About Section -->
-        <section class="about">
-            <div class="container">
-                <h2 class="section-title">Made Local, All Natural</h2>
-                <p class="about-text">
-                    Australian Natural Soap is crafted with premium, eco-friendly ingredients to nourish and revitalise your skin. At Australian Natural Soap, we specialise in Australian made soap, using plant-based oils and essential extracts for a gentle, moisturising cleanse. Experience the difference with our handcrafted soaps, designed for all skin types.
-                </p>
-                
-                <div class="features">
-                    <div class="feature">
-                        <img src="resources/peta-cruelty-free.png" alt="PETA Cruelty Free" class="feature-icon">
-                    </div>
-                    <div class="feature">
-                        <img src="resources/no-chemicals.png" alt="No Added Chemicals" class="feature-icon">
-                    </div>
-                    <div class="feature">
-                        <img src="resources/australian-made-and-owned.png" alt="Australian Made and Owned" class="feature-icon">
-                    </div>
-                </div>
-                
-                <div class="quality-text">
-                    <p>Our commitment to quality ensures that every bar of Australian Natural Soap is cruelty-free, chemical-free, and made sustainably. Whether you prefer invigorating citrus, calming lavender, or refreshing eucalyptus, our range offers the best Natural Soap from Australia.</p>
-                </div>
-            </div>
-        </section>
-
         <!-- Our Story Section -->
         <section class="story">
             <div class="container">
@@ -118,9 +117,7 @@
                     </div>
                     
                     <div class="story-text">
-                        <p>At Australian Natural Soap, we believe that skincare should be simple, natural, and free from harmful chemicals. Our journey began with a passion for sustainable living and a love for Triple Milled Soap.</p>
-                        
-                        <p>Frustrated with mass-produced soaps filled with synthetic ingredients, we set out to create...</p>
+                        <p>After many years of attending many markets with our beautiful soaps and other products, we have our website operating. During the many COVID-19 lockdowns, we were able continue serving our valued customers thru our website. We subsidised the postal cost making it easy for our customers to still be able to obtain our soaps. We also operate our shop at Dandenong Market, Stalls B1-2 in the Bazaar area. We were able to expand... </p>
                         
                         <button class="read-more-btn">Read More</button>
                     </div>
@@ -130,11 +127,11 @@
     </div>
 
     <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-overlay" id="cart-overlay"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
             <h2>Your Cart</h2>
-            <button class="close-cart" onclick="toggleCart()">×</button>
+            <button class="close-cart" id="close-cart">×</button>
         </div>
         
         <div class="cart-items" id="cart-items">
@@ -148,7 +145,7 @@
             <div class="cart-total">
                 Total: $<span id="cart-total">0.00</span>
             </div>
-            <button class="checkout-btn" onclick="proceedToCheckout()">Checkout</button>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
         </div>
     </div>
 

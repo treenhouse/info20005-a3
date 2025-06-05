@@ -13,20 +13,20 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home')">
+            <a href="home.html">
                 <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
             </a>
             
             <ul class="nav-menu">
-                <li><a href="home.html" data-page="home">Home</a></li>
-                <li><a href="products.html" data-page="soaps">Soap</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Incense</a></li>
-                <li><a href="#" onclick="showPage('soaps')">Aromatherapy</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Soap</a></li>
+                <li><a href="products.html">Incense</a></li>
+                <li><a href="products.html">Aromatherapy</a></li>
             </ul>
 
             <button class="mobile-menu-toggle">☰</button>
 
-            <div class="cart-icon" onclick="toggleCart()">
+            <div class="cart-icon" id="cart-icon">
                 🛒
                 <span class="cart-count" id="cart-count">0</span>
             </div>
@@ -34,94 +34,92 @@
     </header>
 
     <!-- Checkout Page -->
-    <div id="checkout" class="page">
-        <div class="container">
-            <div class="breadcrumb">
-                <a href="#" onclick="showPage('home')">Home</a> > Checkout
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Home</a> > Checkout
+        </div>
+        
+        <h1 class="section-title">Checkout</h1>
+        
+        <form class="checkout-form" id="checkout-form">
+            <h2>Contact Information</h2>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
             </div>
             
-            <h1 class="section-title">Checkout</h1>
+            <h2>Delivery Address</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
             
-            <form class="checkout-form" onsubmit="processOrder(event)">
-                <h2>Contact Information</h2>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            
+            <div class="form-row">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" required>
                 </div>
-                
-                <h2>Delivery Address</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" required>
-                    </div>
-                </div>
-                
                 <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" required>
+                    <label for="postcode">Postcode</label>
+                    <input type="text" id="postcode" name="postcode" required>
                 </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" id="city" name="city" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="postcode">Postcode</label>
-                        <input type="text" id="postcode" name="postcode" required>
-                    </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="state">State</label>
+                <select id="state" name="state" required>
+                    <option value="">Select State</option>
+                    <option value="NSW">New South Wales</option>
+                    <option value="VIC">Victoria</option>
+                    <option value="QLD">Queensland</option>
+                    <option value="WA">Western Australia</option>
+                    <option value="SA">South Australia</option>
+                    <option value="TAS">Tasmania</option>
+                    <option value="ACT">Australian Capital Territory</option>
+                    <option value="NT">Northern Territory</option>
+                </select>
+            </div>
+            
+            <h2>Payment Details</h2>
+            <div class="form-group">
+                <label for="paymentMethod">Payment Method</label>
+                <select id="paymentMethod" name="paymentMethod" required>
+                    <option value="">Select Payment Method</option>
+                    <option value="card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+            </div>
+            
+            <div class="cart-total">
+                <h3>Order Summary</h3>
+                <div id="checkout-items"></div>
+                <div class="total-line">
+                    <strong>Total: $<span id="checkout-total">0.00</span></strong>
                 </div>
-                
-                <div class="form-group">
-                    <label for="state">State</label>
-                    <select id="state" name="state" required>
-                        <option value="">Select State</option>
-                        <option value="NSW">New South Wales</option>
-                        <option value="VIC">Victoria</option>
-                        <option value="QLD">Queensland</option>
-                        <option value="WA">Western Australia</option>
-                        <option value="SA">South Australia</option>
-                        <option value="TAS">Tasmania</option>
-                        <option value="ACT">Australian Capital Territory</option>
-                        <option value="NT">Northern Territory</option>
-                    </select>
-                </div>
-                
-                <h2>Payment Method</h2>
-                <div class="form-group">
-                    <label for="paymentMethod">Payment Method</label>
-                    <select id="paymentMethod" name="paymentMethod" required>
-                        <option value="">Select Payment Method</option>
-                        <option value="card">Credit Card</option>
-                        <option value="paypal">PayPal</option>
-                        <option value="bank">Bank Transfer</option>
-                    </select>
-                </div>
-                
-                <div class="cart-total">
-                    <h3>Order Summary</h3>
-                    <div id="checkout-items"></div>
-                    <div class="total-line">
-                        <strong>Total: $<span id="checkout-total">0.00</span></strong>
-                    </div>
-                </div>
-                
-                <button type="submit" class="checkout-btn">Place Order</button>
-            </form>
-        </div>
+            </div>
+            
+            <button type="submit" class="checkout-btn">Place Order</button>
+        </form>
     </div>
 
     <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-overlay" id="cart-overlay"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
             <h2>Your Cart</h2>
-            <button class="close-cart" onclick="toggleCart()">×</button>
+            <button class="close-cart" id="close-cart">×</button>
         </div>
         
         <div class="cart-items" id="cart-items">
@@ -135,7 +133,7 @@
             <div class="cart-total">
                 Total: $<span id="cart-total">0.00</span>
             </div>
-            <button class="checkout-btn" onclick="proceedToCheckout()">Checkout</button>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
         </div>
     </div>
 

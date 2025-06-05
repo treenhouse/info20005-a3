@@ -284,6 +284,17 @@ body {
     display: inline-block;
 }
 
+.other-button {
+    border: 3px solid #5a7c65; 
+    color: #5a7c65;
+    padding: 1rem 2rem;
+    font-family: "Noto Serif Display";
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
 .cta-button:hover {
     background-color: #F0EEEB;
     color: #5a7c65;
@@ -291,6 +302,11 @@ body {
 
 .cta-button:hover .cta-button-text {
     color: #5a7c65;
+}
+
+.other-button:hover {
+    background-color: #5a7c65;
+    color: white;
 }
 
 /* Main Content */
@@ -321,13 +337,13 @@ body {
 
 
 /* Story Section */
-
 .story-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: center;
     margin-top: 3rem;
+    padding: 4rem;
 }
 
 .story-image {
@@ -457,6 +473,12 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
+.product-weight {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
 .product-image {
     height: 180px;
     display: flex;
@@ -491,10 +513,19 @@ body {
 }
 
 .product-price {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #d4947a;
     font-weight: bold;
     margin-bottom: 1rem;
+    align-self: right;
+}
+
+.product-mass {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    align-self: left;
 }
 
 .product-description {

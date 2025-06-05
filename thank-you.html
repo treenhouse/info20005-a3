@@ -12,20 +12,20 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav-container">
-            <a href="home.html" data-page="home">
+            <a href="home.html">
                 <img src="resources/AustralianNaturalSoap-logo.png" viewBox = "0 0 24 24" width="30%" alt="Australian Natural Soap Logo" class="logo-image">
             </a>
             
             <ul class="nav-menu">
-                <li><a href="home.html" data-page="home">Home</a></li>
-                <li><a href="products.html" data-page="products">Soap</a></li>
-                <li><a href="#" data-page="products">Incense</a></li>
-                <li><a href="#" data-page="products">Aromatherapy</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Soap</a></li>
+                <li><a href="products.html">Incense</a></li>
+                <li><a href="products.html">Aromatherapy</a></li>
             </ul>
 
             <button class="mobile-menu-toggle">☰</button>
 
-            <div class="cart-icon" onclick="toggleCart()">
+            <div class="cart-icon" id="cart-icon">
                 🛒
                 <span class="cart-count" id="cart-count">0</span>
             </div>
@@ -33,23 +33,21 @@
     </header>
 
     <!-- Thank You Page -->
-    <div id="thank-you" class="page">
-        <div class="container">
-            <div class="thank-you">
-                <h1>Thank You!</h1>
-                <p>Your order has been successfully placed.</p>
-                <p>You will receive a confirmation email shortly.</p>
-                <a href="#" class="cta-button" onclick="showPage('home')">Continue Shopping</a>
-            </div>
+    <div class="container">
+        <div class="thank-you">
+            <h1>Thank You!</h1>
+            <p>Your order has been successfully placed.</p>
+            <p>You will receive a confirmation email shortly.</p>
+            <a href="home.html" class="other-button">Continue Shopping</a>
         </div>
     </div>
 
     <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-overlay" id="cart-overlay"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
             <h2>Your Cart</h2>
-            <button class="close-cart" onclick="toggleCart()">×</button>
+            <button class="close-cart" id="close-cart">×</button>
         </div>
         
         <div class="cart-items" id="cart-items">
@@ -63,7 +61,7 @@
             <div class="cart-total">
                 Total: $<span id="cart-total">0.00</span>
             </div>
-            <button class="checkout-btn" onclick="proceedToCheckout()">Checkout</button>
+            <button class="checkout-btn" id="checkout-btn">Checkout</button>
         </div>
     </div>
 
