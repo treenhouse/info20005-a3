@@ -19,14 +19,14 @@
             <ul class="nav-menu">
                 <li><a href="home.html">Home</a></li>
                 <li><a href="products.html">Soap</a></li>
-                <li><a href="products.html">Incense</a></li>
-                <li><a href="products.html">Aromatherapy</a></li>
+                <li><a href=#>Incense</a></li>
+                <li><a href=#>Aromatherapy</a></li>
             </ul>
 
-            <button class="mobile-menu-toggle">☰</button>
+            <button class="mobile-menu-toggle"><img src="resources/menu (1).png" alt="Menu Logo" style="max-height: 25px;"></button>
 
             <div class="cart-icon" id="cart-icon">
-                🛒
+                <img src="resources/shopping-bag.png" alt="Shopping Bag Logo" class="leaf-icon" id="leaf-icon">
                 <span class="cart-count" id="cart-count">0</span>
             </div>
         </nav>
@@ -47,12 +47,8 @@
             
             <div class="product-detail-info">
                 <h1 id="product-detail-name">Product Name</h1>
+                <p class="product-detail-mass" id="product-detail-mass">000g</p>
                 <p class="product-detail-price" id="product-detail-price">$0.00</p>
-                
-                <div class="product-description">
-                    <h3>Description</h3>
-                    <p id="product-detail-description">Product description will appear here.</p>
-                </div>
                 
                 <div class="quantity-selector">
                     <label for="quantity">Quantity:</label>
@@ -62,6 +58,18 @@
                 </div>
                 
                 <button class="other-button" id="add-to-cart-detail">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-description">
+            <h3>Description</h3>
+            <p id="product-detail-description">Product description will appear here.</p>
+        </div>
+
+        <!-- Related Products Section -->
+        <div class="related-products">
+            <h3>Related Products</h3>
+            <div class="related-products-grid" id="related-products-grid">
             </div>
         </div>
     </div>
@@ -88,6 +96,24 @@
             <button class="checkout-btn" id="checkout-btn">Checkout</button>
         </div>
     </div>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="mobile-sidebar" id="mobile-sidebar">
+        <div class="sidebar-header">
+            <button class="close-btn" id="close-sidebar">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="products.html">Soap</a></li>
+                <li><a href=#>Incense</a></li>
+                <li><a href=#>Aromatherapy</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <!-- Footer -->
     <footer class="footer">

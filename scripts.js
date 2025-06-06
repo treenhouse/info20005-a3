@@ -7,14 +7,14 @@ const products = {
         name: 'Coconut and Vanilla Soap',
         mass: '100g',
         price: 1.80,
-        description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturized.',
+        description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturised.',
         image: 'resources/coconut-vanilla.png'
     },
     'coconut-vanilla-200g': {
         name: 'Coconut and Vanilla Soap',
         mass: '200g',
         price: 2.75,
-        description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturized.',
+        description: 'The beautiful creamy Coconut fragrance is intoxicating with notes of fresh coconut and warm vanilla. This luxurious soap is perfect for daily use and leaves your skin feeling soft and moisturised.',
         image: 'resources/coconut-vanilla.png'
     },
     'almond-milk-100g': {
@@ -87,7 +87,39 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mobile menu toggle
     document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
-        alert('Mobile menu functionality would be implemented here');
+        const sidebar = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        sidebar.classList.add('active');
+        overlay.classList.add('active');
+        document.body.classList.add('sidebar-open');
+    });
+
+    // Close sidebar when clicking close button
+    document.getElementById('close-sidebar')?.addEventListener('click', function() {
+        closeSidebar();
+    });
+
+    // Close sidebar when clicking overlay
+    document.getElementById('sidebar-overlay')?.addEventListener('click', function() {
+        closeSidebar();
+    });
+
+    // Close sidebar function
+    function closeSidebar() {
+        const sidebar = document.getElementById('mobile-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
+    }
+
+    // Close sidebar when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeSidebar();
+        }
     });
 });
 
@@ -108,12 +140,11 @@ function setupProductGrid() {
             </div>
             <div class="product-info">
                 <h3 class="product-name">${product.name}</h3>
-                ${product.weight ? `<p class="product-weight">${product.weight}</p>` : ''}
+                ${product.mass ? `<p class="product-mass">${product.mass}</p>` : ''}
                 <p class="product-price">$${product.price.toFixed(2)}</p>
-                <p class="product-description">${product.description}</p>
                 <button class="add-to-cart" 
                     data-id="${id}" 
-                    data-name="${product.name}${product.weight ? ' ' + product.weight : ''}" 
+                    data-name="${product.name}${product.mass ? ' ' + product.mass : ''}" 
                     data-price="${product.price}">
                     Add to Cart
                 </button>
@@ -146,6 +177,7 @@ function setupProductGrid() {
 }
 
 // Product detail page setup
+// Product detail page setup
 function setupProductDetailPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('product');
@@ -154,12 +186,16 @@ function setupProductDetailPage() {
         const product = products[productId];
         document.getElementById('product-detail-name').textContent = product.name;
         document.getElementById('product-detail-price').textContent = `$${product.price.toFixed(2)}`;
+        document.getElementById('product-detail-mass').textContent = `${product.mass}`;
         document.getElementById('product-detail-description').textContent = product.description;
         document.getElementById('product-breadcrumb').textContent = product.name;
         
         // Set the product image
         document.getElementById('product-detail-img').src = product.image;
         document.getElementById('product-detail-img').alt = product.name;
+        
+        // Load related products
+        loadRelatedProducts(productId);
         
         document.getElementById('add-to-cart-detail').addEventListener('click', function() {
             const quantity = parseInt(document.getElementById('quantity').value);
@@ -168,6 +204,63 @@ function setupProductDetailPage() {
     } else {
         // Product not found, redirect to products page
         window.location.href = 'products.html';
+    }
+}
+
+// Function to load related products
+function loadRelatedProducts(currentProductId) {
+    const currentProduct = products[currentProductId];
+    const relatedProductsGrid = document.getElementById('related-products-grid');
+    
+    if (!currentProduct || !relatedProductsGrid) return;
+    
+    // Find products with the same name but different mass (variants)
+    const relatedProducts = Object.entries(products).filter(([id, product]) => {
+        return id !== currentProductId && 
+               product.name === currentProduct.name && 
+               product.mass !== currentProduct.mass;
+    });
+    
+    // If no variants found, get random products from different soap types
+    if (relatedProducts.length === 0) {
+        const otherProducts = Object.entries(products).filter(([id, product]) => {
+            return id !== currentProductId && product.name !== currentProduct.name;
+        });
+        
+        // Get up to 3 random other products
+        const shuffled = otherProducts.sort(() => 0.5 - Math.random());
+        relatedProducts.push(...shuffled.slice(0, 3));
+    }
+    
+    // Clear existing content
+    relatedProductsGrid.innerHTML = '';
+    
+    // Add related products to the grid
+    relatedProducts.forEach(([id, product]) => {
+        const productElement = document.createElement('div');
+        productElement.className = 'related-product-item';
+        productElement.onclick = () => {
+            window.location.href = `product-detail.html?product=${id}`;
+        };
+        
+        productElement.innerHTML = `
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
+            </div>
+            <div class="related-product-name">${product.name}</div>
+            <div class="related-product-mass">${product.mass}</div>
+            <div class="related-product-price">$${product.price.toFixed(2)}</div>
+        `;
+        
+        relatedProductsGrid.appendChild(productElement);
+    });
+    
+    // Hide the section if no related products
+    const relatedSection = document.querySelector('.related-products');
+    if (relatedProducts.length === 0) {
+        relatedSection.style.display = 'none';
+    } else {
+        relatedSection.style.display = 'block';
     }
 }
 
@@ -278,7 +371,7 @@ function updateCartUI() {
     // Update checkout items
     if (checkoutItems) {
         checkoutItems.innerHTML = cart.map(item => `
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <div style="color: #666; font-size: 0.9rem; line-height: 1.2rem; display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                 <span>${item.name} × ${item.quantity}</span>
                 <span>$${(item.price * item.quantity).toFixed(2)}</span>
             </div>
@@ -385,7 +478,7 @@ function animateOnScroll() {
     });
 }
 
-// Initialize scroll animations
+// Initialise scroll animations
 document.addEventListener('DOMContentLoaded', function() {
     const elements = document.querySelectorAll('.product-card, .story-content, .features .feature');
     elements.forEach(element => {
@@ -445,7 +538,7 @@ document.querySelector('.read-more-btn').addEventListener('click', function() {
         this.textContent = 'Read Less';
     } else {
         storyText.innerHTML = `
-            <p>After many years of attending many markets with our beautiful soaps and other products, we have our website operating. During the many COVID-19 lockdowns, we were able continue serving our valued customers thru our website. We subsidised the postal cost making it easy for our customers to still be able to obtain our soaps. We also operate our shop at Dandenong Market, Stalls B1-2 in the Bazaar area. We were able to expand... </p>
+            <p>After many years of attending many markets with our beautiful soaps and other products, we have our website operating. During the many COVID-19 lockdowns, we were able continue serving our valued customers thru our website. We subsidised the postal cost making it easy for our customers to still be able to obtain our soaps. We also operate our shop at Dandenong Market, Stalls B1-2 in the Bazaar area. We were able to expand our products to a large range of incense Sticks. Incense cones and resins. Added essential and fragrance oils. We also have... </p>
             
             <button class="read-more-btn">Read More</button>
         `;
