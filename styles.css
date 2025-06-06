@@ -266,13 +266,13 @@ body {
     line-height: 4rem;
     text-transform: capitalize;
     font-size: 4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .hero-subtitle {
     font-family: "Pacifico", cursive;
     font-size: 1.2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     opacity: 0.9;
 }
 
@@ -354,14 +354,6 @@ body {
 
 .story {
     padding: 6rem 0;
-}
-
-.story-background {
-    width: 90%;
-    height: 80%;
-    background: #7a9a7a;
-    border-radius: 15px;
-    z-index: 1;
 }
 
 .story .container {
@@ -857,6 +849,9 @@ body {
     .hero h1 {
         font-weight: 900;
         font-size: 2rem;
+        line-height: 2.5rem;
+        font-style: normal;
+        text-transform: capitalize;
     }
 
     .hero-subtitle {
