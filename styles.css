@@ -5,8 +5,16 @@
 }
 
 @font-face {
-  font-family: Pacifico;
-  src: url(https://fonts.google.com/share?selection.family=Leckerli+One|Pacifico);
+  font-family: 'Noto Serif Display';
+  src: url(https://fonts.google.com/share?selection.family=Leckerli+One|Pacifico),
+       url('resources/NotoSerifDisplay-VariableFont_wdth\,wght.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('resources/NotoSerifDisplay-Italic-VariableFont_wdth\,wght.ttf') format('truetype'); 
+}
+
+@font-face {
+  font-family: 'Pacifico';
+  src: url(https://fonts.google.com/share?selection.family=Leckerli+One|Pacifico),
+       url('resources/Pacifico-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
 }
 
 body {
